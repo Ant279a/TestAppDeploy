@@ -1,5 +1,7 @@
-from User import User
-from Memory_Repository import MemoryRepository
+from translation.adapters.memory_repository import MemoryRepository
+from translation.domainmodel.User import User
+
+
 
 class AuthManager:
     def __init__(self):

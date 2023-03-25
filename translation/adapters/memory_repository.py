@@ -1,7 +1,7 @@
 from typing import List
 
-from AbstractRepository import AbstractRepository
-from User import User
+from .repository import AbstractRepository
+from ..domainmodel.User import User
 
 class MemoryRepository(AbstractRepository):
     def __init__(self):

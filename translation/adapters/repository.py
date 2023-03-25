@@ -2,8 +2,8 @@ import abc
 from typing import List
 from datetime import date
 
-from ..domainmodel.message import Message
-from ..domainmodel.user import User
+from ..domainmodel.Message import Message
+from ..domainmodel.User import User
 
 class AbstractRepository(abc.ABC):
     @abc.abstractmethod
