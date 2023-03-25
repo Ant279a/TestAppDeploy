@@ -1,9 +1,30 @@
-from flask import Blueprint, render_template, redirect, url_for, session, request, flash
+from User import User
+from Memory_Repository import MemoryRepository
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, ValidationError
+class AuthManager:
+    def __init__(self):
+        self.__repository = MemoryRepository()
+    
+    def register_user(self, user_name: str, password: str) -> User:
+        # Check if user with same username already exists
+        existing_user = self.__repository.get_user(user_name)
+        if existing_user:
+            raise ValueError("User already exists")
 
-from password_validator import PasswordValidator
+        # Create new user object and add it to repository
+        user_id = self.__repository.get_id()
+        new_user = User(user_id, user_name, password)
+        self.__repository.add_user(new_user)
+        return new_user
+    
+    def authenticate_user(self, user_name: str, password: str) -> bool:
+        # Check if user with given username exists
+        user = self.__repository.get_user(user_name)
+        if not user:
+            return False
 
-from functools import wraps
+        # Check if password matches
+        if user.password == password:
+            return True
+        
+        return False
