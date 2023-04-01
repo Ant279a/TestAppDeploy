@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block content %}
+  <h1>Login</h1>
+  {% if error %}
+    <p style="color: red;">{{ error }}</p>
+  {% endif %}
+  <form method="POST">
+    <input type="submit" name="user_a" value="User A">
+    <input type="hidden" name="user_a_username" value="user_a_username">
+    <input type="hidden" name="user_a_password" value="user_a_password">
+
+    <input type="submit" name="user_b" value="User B">
+    <input type="hidden" name="user_b_username" value="user_b_username">
+    <input type="hidden" name="user_b_password" value="user_b_password">
+  </form>
+{% endblock %}

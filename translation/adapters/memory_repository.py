@@ -51,20 +51,28 @@ class MemoryRepository(AbstractRepository):
                 self._users[index] = updated_user
                 break
 
-    def send_message(self, sender_id: int, recipient_id: int, content: str) -> None:
-        message = Message(sender_id, recipient_id, content)
-        self._messages.append(message)
-    
-    def fetch_messages(self, sender_id: int, recipient_id: int, sender_lang: str, recipient_lang: str) -> List[Message]:
+    def send_message(self, sender_id: int, recipient_id: int, content: str, sender_lang: str, recipient_lang: str):
+        # Store the original message
+        print(f"Senders language: {sender_lang} and recipient: {recipient_lang}")
+        original_message = Message(sender_id, recipient_id, content, language=sender_lang)
+        self._messages.append(original_message)
+
+        # If the sender and recipient have different languages, store the translated message as well
+        if sender_lang != recipient_lang:
+            translated_content = translate_text(content, sender_lang, recipient_lang)
+            translated_message = Message(sender_id, recipient_id, translated_content, language=recipient_lang)
+            self._messages.append(translated_message)
+
+
+    def fetch_messages(self, sender_id: int, recipient_id: int, preferred_language: str) -> List[Message]:
         messages = []
         for message in self._messages:
             if (message.sender_id == sender_id and message.recipient_id == recipient_id) or \
-               (message.sender_id == recipient_id and message.recipient_id == sender_id):
-                # Check if the sender and recipient have different languages
-                if sender_lang != recipient_lang:
-                    # If they do, translate the message to the recipient's language
-                    message.content = translate_text(message.content, sender_lang, recipient_lang)
-
-                messages.append(message)
-
+            (message.sender_id == recipient_id and message.recipient_id == sender_id):
+            
+                # Check the message's language
+                if message.language == preferred_language:
+                    messages.append(message)
+                    
         return messages
+

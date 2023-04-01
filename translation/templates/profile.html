@@ -6,41 +6,51 @@
 
 {% block content %}
     <h1>{{ user.username }}'s Profile</h1>
+    <div class="add-friend-wrapper">
+        <form method="post" action="{{ url_for('profile_views.add_friend') }}">
+            <input type="text" name="friend_username" placeholder="Enter username">
+            <button type="submit">Add friend</button>
+        </form>
+    </div>
     <div class="container">
-        <div class="friends-list" id="friends-list">
+        <div class="friends-list">
             <h2>Friends</h2>
             <ul>
                 {% for friend in user.friends %}
-                    <li data-username="{{ friend.username }}"><div class="circle"></div>{{ friend.username }}</li>
+                    <li><div class="circle"></div>{{ friend.username }}</li>
                 {% else %}
                     <li>No friends yet.</li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('profile_views.add_friend') }}" method="post">
-                <input type="text" name="friend_username" placeholder="Enter friend's username">
-                <button type="submit">Add Friend</button>
-            </form>
         </div>
         <div class="message-area">
-            <div class="previous-messages-wrapper" id="previous-messages-wrapper">
+            <div class="previous-messages-wrapper">
                 {% for message in messages %}
-                    <p><strong>{{ message.sender_username }}:</strong> {{ message.content }}</p>
-                {% else %}
-                    <p>No messages yet.</p>
+                    <div class="bubble{% if message.sender_id == user.user_id %} sent user1{% else %} received user2{% endif %}">
+                        <div class="bubble{% if message.sender_id == user.user_id %} sent{% else %} received{% endif %}">
+                            {{ message.content }}
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
-            
             <div class="message-box">
-                <form id="message-form" method="POST" action="{{ url_for('profile_views.send_message') }}">
-                    <input id="message-input" class="message-input" type="text" name="content" placeholder="Type your message...">
-                    <input type="text" name="recipient_username" placeholder="Recipient's username">
-                    <button type="submit">Send</button>
+                <form id="message-form" method="post" action="{{ url_for('profile_views.send_message') }}">
+                    <select id="recipient_username" name="recipient_username" class="recipient-select">
+                        {% for friend in user.friends %}
+                          <option value="{{ friend.username }}">{{ friend.username }}</option>
+                        {% endfor %}
+                    </select>
+                  <input id="content" class="message-input" type="text" placeholder="Type your message...">
+                  <button type="submit" class="send-button"><i class="fa fa-paper-plane"></i></button>
                 </form>
-            </div>
+              </div>
         </div>
+        <select id="language-select" name="language">
+            <option value="English" selected>English</option>
+            <option value="Korean">Korean</option>
+        </select>
+        
+          
     </div>
-    <form id="language-switch-form" method="POST" action="{{ url_for('profile_views.update_language_to_korean') }}">
-        <input type="hidden" name="language" value="{{ user.preferred_language == 'English' and 'Korean' or 'English' }}">
-        <button type="submit">{{ user.preferred_language == 'English' and 'Switch to Korean' or 'Switch to English' }}</button>
-    </form>
+    <script src="{{ url_for('static', filename='profile.js') }}"></script>
 {% endblock %}
