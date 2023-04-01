@@ -7,31 +7,40 @@
 {% block content %}
     <h1>{{ user.username }}'s Profile</h1>
     <div class="container">
-        <div class="friends-list">
+        <div class="friends-list" id="friends-list">
             <h2>Friends</h2>
             <ul>
                 {% for friend in user.friends %}
-                    <li><div class="circle"></div>{{ friend.username }}</li>
+                    <li data-username="{{ friend.username }}"><div class="circle"></div>{{ friend.username }}</li>
                 {% else %}
                     <li>No friends yet.</li>
                 {% endfor %}
             </ul>
+            <form action="{{ url_for('profile_views.add_friend') }}" method="post">
+                <input type="text" name="friend_username" placeholder="Enter friend's username">
+                <button type="submit">Add Friend</button>
+            </form>
         </div>
         <div class="message-area">
-            <div class="previous-messages-wrapper">
-                <div class="bubble sent user1">
-                    <div class="bubble sent">Hey how are you?</div>
-                </div>
-                <div class="bubble sent user2">
-                    <div class="bubble sent">I'm good, thanks for asking!</div>
-                </div>
-                
-                
+            <div class="previous-messages-wrapper" id="previous-messages-wrapper">
+                {% for message in messages %}
+                    <p><strong>{{ message.sender_username }}:</strong> {{ message.content }}</p>
+                {% else %}
+                    <p>No messages yet.</p>
+                {% endfor %}
             </div>
+            
             <div class="message-box">
-                <input class="message-input" type="text" placeholder="Type your message...">
-                <div class="send-button"><i class="fa fa-paper-plane"></i></div>
+                <form id="message-form" method="POST" action="{{ url_for('profile_views.send_message') }}">
+                    <input id="message-input" class="message-input" type="text" name="content" placeholder="Type your message...">
+                    <input type="text" name="recipient_username" placeholder="Recipient's username">
+                    <button type="submit">Send</button>
+                </form>
             </div>
         </div>
     </div>
+    <form id="language-switch-form" method="POST" action="{{ url_for('profile_views.update_language_to_korean') }}">
+        <input type="hidden" name="language" value="{{ user.preferred_language == 'English' and 'Korean' or 'English' }}">
+        <button type="submit">{{ user.preferred_language == 'English' and 'Switch to Korean' or 'Switch to English' }}</button>
+    </form>
 {% endblock %}
