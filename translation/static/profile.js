@@ -43,6 +43,7 @@ messageForm.addEventListener('submit', (event) => {
         messageBubble.textContent = message.content;
         messagesWrapper.appendChild(messageBubble);
       });
+      scrollToBottom()
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -131,4 +132,11 @@ setInterval(() => {
       updateMessages(currentRecipient);
     }
   }, 5000);
+
+
+  function scrollToBottom() {
+    const messagesWrapper = document.querySelector('.previous-messages-wrapper');
+    messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
+}
+
 

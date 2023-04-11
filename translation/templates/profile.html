@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ user.username }}'s Profile</h1>
-    <div class="add-friend-wrapper">
-        <form method="post" action="{{ url_for('profile_views.add_friend') }}">
-            <input type="text" name="friend_username" placeholder="Enter username">
-            <button type="submit">Add friend</button>
-        </form>
+    <div class="header">
+        <h1>{{ user.username }}'s Profile</h1>
+        <select id="language-select" name="language">
+            <option value="English" selected>English</option>
+            <option value="Korean">Korean</option>
+        </select>
     </div>
     <div class="container">
         <div class="friends-list">
@@ -22,35 +22,40 @@
                     <li>No friends yet.</li>
                 {% endfor %}
             </ul>
-        </div>
-        <div class="message-area">
-            <div class="previous-messages-wrapper">
-                {% for message in messages %}
-                    <div class="bubble{% if message.sender_id == user.user_id %} sent user1{% else %} received user2{% endif %}">
-                        <div class="bubble{% if message.sender_id == user.user_id %} sent{% else %} received{% endif %}">
-                            {{ message.content }}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="message-box">
-                <form id="message-form" method="post" action="{{ url_for('profile_views.send_message') }}">
-                    <select id="recipient_username" name="recipient_username" class="recipient-select">
-                        {% for friend in user.friends %}
-                          <option value="{{ friend.username }}">{{ friend.username }}</option>
-                        {% endfor %}
-                    </select>
-                  <input id="content" class="message-input" type="text" placeholder="Type your message...">
-                  <button type="submit" class="send-button"><i class="fa fa-paper-plane"></i></button>
+            <div class="add-friend-wrapper">
+                <form method="post" action="{{ url_for('profile_views.add_friend') }}">
+                    <input type="text" name="friend_username" placeholder="Enter username">
+                    <button type="submit">Add friend</button>
                 </form>
-              </div>
+            </div>
         </div>
-        <select id="language-select" name="language">
-            <option value="English" selected>English</option>
-            <option value="Korean">Korean</option>
-        </select>
         
-          
-    </div>
+        <!-- Add a new div wrapper around the message-area and message-box -->
+        <div class="chat-container">
+            <div class="message-wrapper">
+                <div class="message-content">
+                    <div class="previous-messages-wrapper">
+                        {% for message in messages %}
+                            <div class="bubble{% if message.sender_id == user.user_id %} sent user1{% else %} received user2{% endif %}">
+                                <div class="bubble{% if message.sender_id == user.user_id %} sent{% else %} received{% endif %}">
+                                    {{ message.content }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="message-box">
+                    <form id="message-form" method="post" action="{{ url_for('profile_views.send_message') }}">
+                        <select id="recipient_username" name="recipient_username" class="recipient-select">
+                            {% for friend in user.friends %}
+                                <option value="{{ friend.username }}">{{ friend.username }}</option>
+                            {% endfor %}
+                        </select>
+                        <input id="content" class="message-input" type="text" placeholder="Type your message...">
+                        <button type="submit" class="send-button"><i class="fa fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>        
     <script src="{{ url_for('static', filename='profile.js') }}"></script>
 {% endblock %}
