@@ -7,6 +7,8 @@ messageForm.addEventListener('submit', (event) => {
     const content = document.getElementById('content').value;
   
     console.log(recipient)
+
+  
   
     fetch('/send_message', {
       method: 'POST',
@@ -49,6 +51,8 @@ messageForm.addEventListener('submit', (event) => {
       console.error('Error:', error);
     });
   });
+
+  
   
 
 function updateMessages(recipient) {
@@ -85,11 +89,8 @@ function updateMessages(recipient) {
     });
   }
 
-  const recipientDropdown = document.querySelector('.recipient-select');
-recipientDropdown.addEventListener('change', (event) => {
-  event.preventDefault();
-  updateMessages(event.target.value);
-});
+
+
 
 const languageSelect = document.getElementById('language-select');
 
@@ -138,5 +139,26 @@ setInterval(() => {
     const messagesWrapper = document.querySelector('.previous-messages-wrapper');
     messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
 }
+
+// Define a function to handle the friend list item click event
+function handleFriendListItemClick(event) {
+  // Get the friend's username from the list item
+  const username = event.target.textContent.trim();
+
+  // Set the recipient dropdown value to the friend's username
+  const recipientDropdown = document.querySelector('.recipient-select');
+  recipientDropdown.value = username;
+
+  // Call the updateMessages() function with the new recipient value
+  updateMessages(username);
+}
+
+// Get all the friend list items
+const friendListItems = document.querySelectorAll('.friends-list li');
+
+// Loop through each list item and add a click event listener
+friendListItems.forEach((item) => {
+  item.addEventListener('click', handleFriendListItemClick);
+});
 
 

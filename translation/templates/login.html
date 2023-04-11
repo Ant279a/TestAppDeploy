@@ -1,21 +1,37 @@
 {% extends 'layout.html' %}
 
+
+
 {% block title %}
   Login
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
   <h1>Login</h1>
   {% if error %}
     <p style="color: red;">{{ error }}</p>
   {% endif %}
-  <form method="POST">
-    <input type="submit" name="user_a" value="User A">
-    <input type="hidden" name="user_a_username" value="user_a_username">
-    <input type="hidden" name="user_a_password" value="user_a_password">
-
-    <input type="submit" name="user_b" value="User B">
-    <input type="hidden" name="user_b_username" value="user_b_username">
-    <input type="hidden" name="user_b_password" value="user_b_password">
+  <form class="box" method="POST">
+    <div class="field">
+      <label class="label" for="user_name">Username</label>
+      <div class="control">
+        <input class="input" type="text" name="user_name" placeholder="username" required>
+      </div>
+    </div>
+  
+    <div class="field">
+      <label class="label" for="password">Password</label>
+      <div class="control">
+        <input class="input" type="password" name="password" placeholder="********" required>
+      </div>
+    </div>
+  
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-link" type="submit">Login</button>
+      </div>
+    </div>
   </form>
+  
 {% endblock %}

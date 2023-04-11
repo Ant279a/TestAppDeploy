@@ -7,10 +7,8 @@
 {% block content %}
     <div class="header">
         <h1>{{ user.username }}'s Profile</h1>
-        <select id="language-select" name="language">
-            <option value="English" selected>English</option>
-            <option value="Korean">Korean</option>
-        </select>
+        <a href="{{ url_for('profile_views.settings') }}">Settings</a>
+
     </div>
     <div class="container">
         <div class="friends-list">
@@ -36,23 +34,23 @@
                 <div class="message-content">
                     <div class="previous-messages-wrapper">
                         {% for message in messages %}
-                            <div class="bubble{% if message.sender_id == user.user_id %} sent user1{% else %} received user2{% endif %}">
-                                <div class="bubble{% if message.sender_id == user.user_id %} sent{% else %} received{% endif %}">
-                                    {{ message.content }}
-                                </div>
+                        <div class="bubble{% if message.sender_id == user.user_id %} sent user1{% else %} received user2{% endif %}">
+                            <div class="message{% if message.sender_id == user.user_id %} sent{% else %} received{% endif %}">
+                              {{ message.content }}
                             </div>
+                          </div>
                         {% endfor %}
                     </div>
                 </div>
                 <div class="message-box">
                     <form id="message-form" method="post" action="{{ url_for('profile_views.send_message') }}">
-                        <select id="recipient_username" name="recipient_username" class="recipient-select">
+                        <select id="recipient_username" name="recipient_username" class="recipient-select" style = "display: none;">
                             {% for friend in user.friends %}
                                 <option value="{{ friend.username }}">{{ friend.username }}</option>
                             {% endfor %}
                         </select>
                         <input id="content" class="message-input" type="text" placeholder="Type your message...">
-                        <button type="submit" class="send-button"><i class="fa fa-paper-plane"></i></button>
+                        
                     </form>
                 </div>
             </div>

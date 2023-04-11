@@ -28,16 +28,9 @@ def register():
 @authentication_views.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Check which button was clicked
-        if 'user_a' in request.form:
-            user_name = "a"
-            password = "user_a_password"
-            auth_manager.register_user(user_name, password)
-        elif 'user_b' in request.form:
-            user_name = "b"
-            password = "user_b_password"
-            auth_manager.register_user(user_name, password)
-        
+
+        user_name = request.form['user_name']
+        password = request.form['password']
 
         # Authenticate user
         authenticated, user_id = auth_manager.authenticate_user(user_name, password)

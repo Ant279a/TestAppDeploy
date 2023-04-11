@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Settings</h1>
+  <a href="{{ url_for('profile_views.profile') }}">Back</a>
+  <form id="language-form" method="POST" action="{{ url_for('profile_views.update_preferred_language') }}">
+    <label for="language-select">Preferred Language:</label>
+    <select id="language-select" name="language">
+      <option value="English" {% if user.preferred_language == "English" %}selected{% endif %}>English</option>
+      <option value="Korean" {% if user.preferred_language == "Korean" %}selected{% endif %}>Korean</option>
+    </select>
+    <button type="submit">Save</button>
+  </form>
+
+  <script src="{{ url_for('static', filename='profile_settings.js') }}"></script>
+
+{% endblock %}
+

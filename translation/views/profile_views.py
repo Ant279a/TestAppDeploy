@@ -157,3 +157,27 @@ def fetch_messages():
 
     # Return a JSON response with the translated messages
     return jsonify({'messages': messages_data})
+
+
+# Settings page route allows user to edit their language and other things in the future
+@profile_views.route('/settings', methods=['GET', 'POST'])
+def settings():
+    # Get the user from the repository using the user ID
+    memory_repo: MemoryRepository = auth_manager.get_repository()
+    user_id = session.get('user_id')
+    user = memory_repo.get_user_by_id(user_id)
+    user = memory_repo.get_user_by_id(user_id)
+    current_language = user.preferred_language
+
+
+    if request.method == 'POST':
+        # Get the new preferred language from the form data
+        new_language = request.form.get('language')
+        print("the new language is: " + new_language)
+
+        # Update the user's preferred language
+        user.preferred_language = new_language
+        memory_repo.update_user(user)
+
+    # Render the settings page with the user information
+    return render_template('settings.html', user=user)

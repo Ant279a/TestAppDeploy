@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>EK Chat</title>
+    <title>Translate Chat</title>
     <style>
       /* Centering the page contents */
       body {
@@ -32,8 +32,8 @@
     </style>
   </head>
   <body>
-    <h1>EK Chat</h1>
-    <button type="button">Login</button>
-    <button type="button">Register</button>
+    <h1>Translate Chat</h1>
+    <a href="{{ url_for('authentication_views.login') }}"><button type="button">Login</button></a>
+    <a href="{{ url_for('authentication_views.register') }}"><button type="button">Register</button></a>
   </body>
 </html>
