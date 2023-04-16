@@ -8,6 +8,8 @@
     <select id="language-select" name="language">
       <option value="English" {% if user.preferred_language == "English" %}selected{% endif %}>English</option>
       <option value="Korean" {% if user.preferred_language == "Korean" %}selected{% endif %}>Korean</option>
+      <option value="Russian" {% if user.preferred_language == "Russian" %}selected{% endif %}>Russian</option>
+
     </select>
     <button type="submit">Save</button>
   </form>
